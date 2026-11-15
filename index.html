@@ -6,6 +6,15 @@
   <title>Astronaut Vitals</title>
   <meta name="description" content="Visual health self-assessment tool for astronauts on long-duration missions. Demo prototype, not a medical device.">
   <!-- AI-generated code (Claude) — see README "AI tools used". -->
+  <meta name="theme-color" content="#070b18">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Vitals">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="stylesheet" href="src/styles/main.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <script type="module" src="src/ui/app.js"></script>
@@ -25,6 +34,8 @@
       <span class="mission-label">Mission day</span>
       <span class="mission-day" id="missionDay">1</span>
       <span class="overall-chip" id="overallChip" data-status="UNKNOWN"><span class="ico" aria-hidden="true">?</span><span class="txt">No data</span></span>
+      <span class="net-chip" id="netChip" role="status" hidden><span aria-hidden="true">⦸</span> Offline — data stays on this device</span>
+      <button type="button" class="btn install-btn" id="installBtn" hidden>Install app</button>
     </div>
   </header>
 

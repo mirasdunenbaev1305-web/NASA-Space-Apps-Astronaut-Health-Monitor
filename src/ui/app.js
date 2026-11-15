@@ -450,8 +450,35 @@ function onReset(e) {
   renderAll();
 }
 
+/* ---------- installable app (PWA) & offline ---------- */
+function setupPwa() {
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    navigator.serviceWorker.register('./sw.js').catch((err) => console.warn('Service worker not registered', err));
+  }
+  let deferred = null;
+  const btn = $('#installBtn');
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferred = e;
+    btn.hidden = false;
+  });
+  btn.addEventListener('click', async () => {
+    if (!deferred) return;
+    deferred.prompt();
+    try { await deferred.userChoice; } catch (_) { /* ignore */ }
+    deferred = null;
+    btn.hidden = true;
+  });
+  window.addEventListener('appinstalled', () => { btn.hidden = true; });
+  const net = () => { $('#netChip').hidden = navigator.onLine; };
+  window.addEventListener('online', net);
+  window.addEventListener('offline', net);
+  net();
+}
+
 /* ---------- boot ---------- */
 async function init() {
+  setupPwa();
   const loaded = await loadEngine();
   engine = loaded.engine;
   $('#engineSource').textContent = loaded.source === 'stubs' ? 'Engine: placeholder thresholds (stub).' : '';
