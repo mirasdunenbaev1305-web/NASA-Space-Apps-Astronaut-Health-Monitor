@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Astronaut Vitals</title>
+  <meta name="description" content="Visual health self-assessment tool for astronauts on long-duration missions. Demo prototype, not a medical device.">
+  <!-- AI-generated code (Claude) — see README "AI tools used". -->
+  <link rel="stylesheet" href="src/styles/main.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script type="module" src="src/ui/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="app-header">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="6" fill="currentColor"/><ellipse cx="16" cy="16" rx="14" ry="5" fill="none" stroke="currentColor" stroke-width="1.6" transform="rotate(-25 16 16)"/></svg>
+      <div>
+        <h1>Astronaut Vitals</h1>
+        <p class="tagline">Health self-assessment for long-duration missions</p>
+      </div>
+    </div>
+    <div class="mission">
+      <span class="mission-label">Mission day</span>
+      <span class="mission-day" id="missionDay">1</span>
+      <span class="overall-chip" id="overallChip" data-status="UNKNOWN"><span class="ico" aria-hidden="true">?</span><span class="txt">No data</span></span>
+    </div>
+  </header>
+
+  <p class="disclaimer" role="note"><strong>Demo prototype. Not a medical device.</strong> Readings are synthetic or self-reported; decisions stay with the crew and flight surgeons.</p>
+
+  <div class="escalation" id="escalation" role="alert" hidden>
+    <span class="esc-ico" aria-hidden="true">✕</span>
+    <div>
+      <strong>Contact flight surgeon on the ground</strong>
+      <p id="escalationReason">One or more indicators need medical review.</p>
+    </div>
+  </div>
+
+  <main id="main">
+    <section class="panel body-panel" aria-labelledby="bodyTitle">
+      <div class="panel-head">
+        <h2 id="bodyTitle">Body status</h2>
+        <p class="hint">Select a body area to see its function and status.</p>
+      </div>
+      <div class="body-layout">
+        <div class="figure-wrap" id="figureWrap"></div>
+        <ul class="organ-list" id="organList" aria-label="Body areas"></ul>
+      </div>
+      <div class="organ-detail" id="organDetail" aria-live="polite">
+        <p class="muted">No body area selected.</p>
+      </div>
+    </section>
+
+    <section class="panel input-panel" aria-labelledby="inputTitle">
+      <div class="panel-head">
+        <h2 id="inputTitle">Log a reading</h2>
+        <p class="hint">Leave a field empty if it was not measured.</p>
+      </div>
+      <form id="readingForm" novalidate>
+        <fieldset class="field-grid">
+          <legend class="sr-only">Vital signs</legend>
+          <label class="field"><span>Systolic BP <em>mmHg</em></span><input type="number" name="systolic" inputmode="numeric" min="50" max="250" step="1" placeholder="120"></label>
+          <label class="field"><span>Diastolic BP <em>mmHg</em></span><input type="number" name="diastolic" inputmode="numeric" min="30" max="150" step="1" placeholder="80"></label>
+          <label class="field"><span>Heart rate <em>bpm</em></span><input type="number" name="heartRate" inputmode="numeric" min="20" max="250" step="1" placeholder="70"></label>
+          <label class="field"><span>Blood glucose <em>mg/dL</em></span><input type="number" name="glucose" inputmode="numeric" min="20" max="600" step="1" placeholder="90"></label>
+          <label class="field"><span>Body temperature <em>°C</em></span><input type="number" name="temperature" inputmode="decimal" min="30" max="45" step="0.1" placeholder="36.8"></label>
+          <label class="field"><span>Sleep, last 24 h <em>hours</em></span><input type="number" name="sleepHours" inputmode="decimal" min="0" max="24" step="0.5" placeholder="7.5"></label>
+        </fieldset>
+
+        <fieldset class="mood-set">
+          <legend>Mood</legend>
+          <div class="mood-options">
+            <label><input type="radio" name="mood" value="1"><span aria-hidden="true">😞</span><span class="sr-only">1, very low</span></label>
+            <label><input type="radio" name="mood" value="2"><span aria-hidden="true">🙁</span><span class="sr-only">2, low</span></label>
+            <label><input type="radio" name="mood" value="3"><span aria-hidden="true">😐</span><span class="sr-only">3, neutral</span></label>
+            <label><input type="radio" name="mood" value="4"><span aria-hidden="true">🙂</span><span class="sr-only">4, good</span></label>
+            <label><input type="radio" name="mood" value="5"><span aria-hidden="true">😄</span><span class="sr-only">5, very good</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="symptom-set">
+          <legend>Symptoms</legend>
+          <div class="symptoms">
+            <label><input type="checkbox" name="symptoms" value="headache"> Headache</label>
+            <label><input type="checkbox" name="symptoms" value="dizziness"> Dizziness</label>
+            <label><input type="checkbox" name="symptoms" value="nausea"> Nausea</label>
+            <label><input type="checkbox" name="symptoms" value="jointPain"> Joint pain</label>
+            <label><input type="checkbox" name="symptoms" value="fatigue"> Fatigue</label>
+          </div>
+        </fieldset>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary">Log reading</button>
+          <button type="button" class="btn" id="simulateBtn">Simulate readings</button>
+        </div>
+        <p class="form-msg" id="formMsg" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="panel status-panel" aria-labelledby="statusTitle">
+      <div class="panel-head">
+        <h2 id="statusTitle">Indicators</h2>
+        <p class="hint" id="statusTime">No readings yet.</p>
+      </div>
+      <ul class="status-grid" id="statusGrid"></ul>
+    </section>
+
+    <section class="panel guidance-panel" aria-labelledby="guidanceTitle">
+      <div class="panel-head">
+        <h2 id="guidanceTitle">Guidance</h2>
+        <p class="hint">Decision support, not a medical diagnosis.</p>
+      </div>
+      <div id="guidanceList"><p class="muted">Guidance appears here when an indicator needs attention.</p></div>
+    </section>
+
+    <section class="panel hazards-panel" aria-labelledby="hazardsTitle">
+      <div class="panel-head">
+        <h2 id="hazardsTitle">Spaceflight hazards</h2>
+        <p class="hint">How the five hazards connect to your body areas.</p>
+      </div>
+      <ul class="hazard-grid" id="hazardGrid"></ul>
+    </section>
+
+    <section class="panel trends-panel" aria-labelledby="trendsTitle">
+      <div class="panel-head">
+        <h2 id="trendsTitle">Trends</h2>
+        <p class="hint">Shaded band is the normal range.</p>
+      </div>
+      <div class="chart-grid" id="chartGrid"></div>
+      <details class="table-view">
+        <summary>Show history as a table</summary>
+        <div class="table-scroll"><table id="historyTable"></table></div>
+      </details>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-actions">
+      <button type="button" class="btn" id="csvBtn">Export CSV</button>
+      <button type="button" class="btn" id="pdfBtn">Print / Save as PDF</button>
+      <button type="button" class="btn" id="demoBtn">Load demo week</button>
+      <button type="button" class="btn danger" id="resetBtn">Reset demo data</button>
+    </div>
+    <p class="muted small">Sources: NASA Human Research Program (hazards, risks, ongoing research) and Canadian Space Agency public articles. <span id="engineSource"></span></p>
+  </footer>
+</body>
+</html>
