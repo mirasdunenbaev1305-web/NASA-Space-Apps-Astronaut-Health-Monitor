@@ -20,10 +20,10 @@ Create a slide deck for our NASA Space Apps Challenge 2026 project demo. Follow 
 ## Our details
 - **Project name:** Astronaut Vitals
 - **Tagline:** Health self-assessment for long-duration missions — works offline
-- **Team name:** [TEAM NAME]
-- **Team members:** [Full name 1], [Full name 2], [Full name 3 …]
-- **Challenge:** [EXACT CHALLENGE TITLE FROM THE SPACE APPS WEBSITE]
-- **Local Event:** [CITY / LOCAL EVENT NAME]
+- **Team name:** Bit&Byte
+- **Team members:** Shynzhyrbekov Madi (Logic and Content), Dunenbaev Miras (UI)
+- **Challenge:** Create Health Monitoring Software for Astronauts on Space Missions
+- **Local Event:** Universal Event
 - **Live app (no login):** https://mirasdunenbaev1305-web.github.io/NASA-Space-Apps-Astronaut-Health-Monitor/
 - **Code:** https://github.com/mirasdunenbaev1305-web/NASA-Space-Apps-Astronaut-Health-Monitor
 
