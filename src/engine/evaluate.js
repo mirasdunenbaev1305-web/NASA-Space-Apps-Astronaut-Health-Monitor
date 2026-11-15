@@ -1,8 +1,8 @@
-import thresholdsConfig from '../../config/thresholds.json' with { type: 'json' };
+import { THRESHOLDS } from './thresholds.js';
 
 const STATUS_RANK = { UNKNOWN: 0, NORMAL: 1, WATCH: 2, ALERT: 3 };
 const STATUSES = ['normal', 'watch', 'alert'];
-const DISCLAIMER = 'Demo decision support only; not a medical diagnosis or treatment plan. Follow mission medical procedures and qualified clinician guidance.';
+const DISCLAIMER = 'Decision support, not a medical diagnosis. Follow mission medical procedures and qualified clinician guidance.';
 
 const guidance = {
   systolic: {
@@ -40,43 +40,43 @@ const organs = {
     name: 'Brain',
     function: 'Coordinates thinking, movement, sensation, and many body functions. This demo has no neurological exam.',
     indicatorIds: ['mood', 'sleepHours'],
-    hazards: ['spaceRadiation', 'isolationConfinement', 'distanceFromEarth', 'gravityFields']
+    hazards: ['Space radiation', 'Isolation and confinement', 'Distance from Earth', 'Gravity fields']
   },
   heart: {
     name: 'Heart',
     function: 'Pumps blood through the body. The available readings show pulse and blood pressure only; they do not assess heart disease.',
     indicatorIds: ['heartRate', 'systolic', 'diastolic'],
-    hazards: ['spaceRadiation', 'gravityFields', 'distanceFromEarth']
+    hazards: ['Space radiation', 'Gravity fields', 'Distance from Earth']
   },
   lungs: {
     name: 'Lungs',
     function: 'Exchange oxygen and carbon dioxide. This demo does not collect breathing rate or oxygen level.',
     indicatorIds: [],
-    hazards: ['hostileClosedEnvironments', 'distanceFromEarth']
+    hazards: ['Hostile/closed environments', 'Distance from Earth']
   },
   bones: {
     name: 'Bones and skeleton',
     function: 'Provide structure and protect organs. This demo has no bone-density measurement.',
     indicatorIds: [],
-    hazards: ['gravityFields', 'distanceFromEarth']
+    hazards: ['Gravity fields', 'Distance from Earth']
   },
   gut: {
     name: 'Digestive system',
     function: 'Processes food and absorbs nutrients. A single glucose entry does not assess digestion or nutrition.',
     indicatorIds: ['glucose'],
-    hazards: ['hostileClosedEnvironments', 'distanceFromEarth']
+    hazards: ['Hostile/closed environments', 'Distance from Earth']
   },
   immune: {
     name: 'Immune system',
     function: 'Helps defend the body against infection. Temperature and symptoms are not a complete immune assessment.',
     indicatorIds: ['temperature'],
-    hazards: ['spaceRadiation', 'isolationConfinement', 'hostileClosedEnvironments', 'distanceFromEarth']
+    hazards: ['Space radiation', 'Isolation and confinement', 'Hostile/closed environments', 'Distance from Earth']
   },
   mood: {
     name: 'Mood and behavioral health',
     function: 'A brief self-rating can support reflection, but it is not a mental health screening or diagnosis.',
     indicatorIds: ['mood', 'sleepHours'],
-    hazards: ['isolationConfinement', 'distanceFromEarth', 'hostileClosedEnvironments']
+    hazards: ['Isolation and confinement', 'Distance from Earth', 'Hostile/closed environments']
   }
 };
 
@@ -105,7 +105,7 @@ function classify(value, definition) {
 /** Evaluate the seven numeric readings described in CONTRACT.md. */
 export function evaluateIndicators(readings = {}) {
   const safeReadings = readings && typeof readings === 'object' && !Array.isArray(readings) ? readings : {};
-  const indicators = Object.entries(thresholdsConfig.indicators).map(([id, definition]) => {
+  const indicators = Object.entries(THRESHOLDS).map(([id, definition]) => {
     const rawValue = safeReadings[id];
     const valid = isValidValue(rawValue, definition);
     return {
@@ -130,11 +130,11 @@ export function evaluateIndicators(readings = {}) {
 export function getGuidance(indicatorId, status) {
   const normalizedStatus = typeof status === 'string' ? status.toUpperCase() : '';
   if (!['WATCH', 'ALERT'].includes(normalizedStatus)) return null;
-  if (!Object.hasOwn(guidance, indicatorId) || !Object.hasOwn(thresholdsConfig.indicators, indicatorId)) return null;
+  if (!Object.hasOwn(guidance, indicatorId) || !Object.hasOwn(THRESHOLDS, indicatorId)) return null;
   const steps = guidance[indicatorId]?.[normalizedStatus];
   if (!steps) return null;
   return {
-    title: `${thresholdsConfig.indicators[indicatorId].label}: ${normalizedStatus}`,
+    title: `${THRESHOLDS[indicatorId].label}: ${normalizedStatus}`,
     steps: [...steps],
     disclaimer: DISCLAIMER
   };

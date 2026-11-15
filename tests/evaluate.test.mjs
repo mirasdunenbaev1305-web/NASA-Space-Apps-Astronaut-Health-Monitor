@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import { evaluateIndicators, getGuidance, getOrganInfo } from '../src/engine/evaluate.js';
+import { THRESHOLDS } from '../src/engine/thresholds.js';
 
 const normalReadings = {
   systolic: 110,
@@ -19,6 +21,17 @@ test('normal example returns all seven indicators and no escalation', () => {
   assert.equal(result.overall, 'NORMAL');
   assert.equal(result.escalate, false);
   assert.ok(result.indicators.every(({ status }) => status === 'NORMAL'));
+});
+
+test('browser thresholds match the documented JSON source exactly', async () => {
+  const json = JSON.parse(await readFile(new URL('../config/thresholds.json', import.meta.url), 'utf8'));
+  assert.deepEqual(THRESHOLDS, json.indicators);
+});
+
+test('normal threshold strings stay parseable by the chart UI', () => {
+  for (const definition of Object.values(THRESHOLDS)) {
+    assert.match(definition.threshold, /^-?\d+(?:\.\d+)?[–—-]-?\d+(?:\.\d+)?\s+.+$/);
+  }
 });
 
 test('contract example has a normal heart-rate indicator', () => {
@@ -86,7 +99,7 @@ test('guidance exists only for supported WATCH/ALERT combinations', () => {
   const guidance = getGuidance('mood', 'alert');
   assert.match(guidance.title, /ALERT/);
   assert.ok(guidance.steps.length >= 2);
-  assert.match(guidance.disclaimer, /not a medical diagnosis/i);
+  assert.match(guidance.disclaimer, /decision support, not a medical diagnosis/i);
 });
 
 test('organ info covers contract IDs and returns defensive arrays', () => {
@@ -101,4 +114,11 @@ test('organ info covers contract IDs and returns defensive arrays', () => {
   heart.hazards.push('modified');
   assert.ok(!getOrganInfo('heart').hazards.includes('modified'));
   assert.equal(getOrganInfo('missing'), null);
+});
+
+test('hazard labels are stable strings that the UI can group consistently', () => {
+  const hazards = ['Space radiation', 'Isolation and confinement', 'Distance from Earth', 'Gravity fields', 'Hostile/closed environments'];
+  for (const id of ['brain', 'heart', 'lungs', 'bones', 'gut', 'immune', 'mood']) {
+    for (const hazard of getOrganInfo(id).hazards) assert.ok(hazards.includes(hazard));
+  }
 });

@@ -4,7 +4,7 @@ An educational, rule-based health-monitoring demo concept for a long-duration sp
 
 ## Logic module
 
-`src/engine/evaluate.js` exports the functions defined in [`CONTRACT.md`](CONTRACT.md):
+`src/engine/evaluate.js` exports the functions defined in [`CONTRACT.md`](CONTRACT.md) and imports browser-safe thresholds from `src/engine/thresholds.js`:
 
 - `evaluateIndicators(readings)` evaluates systolic and diastolic blood pressure, heart rate, glucose, temperature, sleep hours, and a mood self-rating.
 - `getGuidance(indicatorId, status)` provides short demo guidance for WATCH and ALERT only.
@@ -17,10 +17,10 @@ Readings may be `null` or omitted. Missing, non-finite, out-of-range, or invalid
 The logic tests use Node's built-in test runner and have no third-party dependencies:
 
 ```sh
-node --test tests/evaluate.test.mjs
+npm test
 ```
 
-Node.js 22 or newer is recommended. The repository does not yet define an `npm test` script because package setup belongs with the app integration. When the UI branch is merged, run the app using the project command chosen there.
+Node.js 22 or newer is recommended. To run tests directly without npm, use `node --test tests/evaluate.test.mjs`. Run the web app from the repository root with `python3 -m http.server 8000`, then open `http://localhost:8000`.
 
 ## Indicators and demo thresholds
 
@@ -40,7 +40,7 @@ These bands deliberately simplify heterogeneous reference values into one transp
 
 ## Spaceflight context and sources
 
-See [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md) for the source-by-source notes, including the NASA and Canadian Space Agency references from the project prompt. The project does not ingest NASA telemetry or real astronaut records. Inputs and simulated readings are synthetic.
+See [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md) for source-by-source notes, including the NASA and Canadian Space Agency references from the project prompt. The project does not ingest NASA telemetry or real astronaut records. Inputs and simulated readings are synthetic.
 
 ## Demo material
 

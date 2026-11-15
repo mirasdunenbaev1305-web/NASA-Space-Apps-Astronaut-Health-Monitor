@@ -37,10 +37,10 @@ Mood ratings have no clinical cutoffs in this project. The 1–5 mood bands are 
 
 | Identifier | Display label |
 |---|---|
-| `spaceRadiation` | Space radiation |
-| `isolationConfinement` | Isolation and confinement |
-| `distanceFromEarth` | Distance from Earth |
-| `gravityFields` | Gravity fields |
-| `hostileClosedEnvironments` | Hostile/closed environments |
+| `Space radiation` | Radiation |
+| `Isolation and confinement` | Isolation |
+| `Distance from Earth` | Distance from Earth |
+| `Gravity fields` | Gravity |
+| `Hostile/closed environments` | Closed environments |
 
-The organ-to-hazard links in `getOrganInfo()` are broad educational associations for navigation. They do not estimate an individual's exposure or predict a medical outcome.
+`getOrganInfo()` returns these exact display labels because the UI groups organs by hazard text. The organ-to-hazard links are broad educational associations for navigation; they do not estimate an individual's exposure or predict a medical outcome.
