@@ -11,7 +11,7 @@ Astronaut Vitals — Offline Health Self-Check for Long-Duration Missions
 Astronaut Vitals is an offline web app that helps astronauts check their own health on long missions, when the link to Earth is slow or interrupted. Crew members log blood pressure, heart rate, blood glucose, body temperature, sleep, mood and symptoms, or simulate sensor readings. Every indicator is shown as NORMAL, WATCH or ALERT, always with an icon and text, and the transparent thresholds are shown next to it. If there is any ALERT or two WATCH indicators, a banner asks the astronaut to contact the flight surgeon on the ground. A clickable body figure shows how the brain, heart, bones, immune system and other areas are affected by the five hazards of spaceflight described by NASA's Human Research Program. Step-by-step guidance, 7-day trend charts and a CSV or PDF report make it easy to share data at the next medical conference. The app installs like a native app, works without a network, and keeps data on the device. It is a demo prototype that uses synthetic data, not a medical device.
 
 ## Project Demonstration
-https://github.com/mirasdunenbaev1305-web/NASA-Space-Apps-Astronaut-Health-Monitor/blob/main/docs/media/demo-video.mp4
+https://mirasdunenbaev1305-web.github.io/NASA-Space-Apps-Astronaut-Health-Monitor/demo/
 
 (27-second video, English, synthetic data, with a visible "AI-assisted" watermark. Screenshots are in `docs/media/screenshots/`.)
 
