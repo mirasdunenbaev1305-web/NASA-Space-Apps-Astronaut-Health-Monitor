@@ -49,6 +49,8 @@ self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
+  // Let the browser stream media (range requests) and the demo page directly.
+  if (req.headers.has('range') || /\.(mp4|webm)$/i.test(url.pathname) || url.pathname.includes('/demo/')) return;
 
   if (url.origin !== self.location.origin) {
     event.respondWith((async () => {

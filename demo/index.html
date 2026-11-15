@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Astronaut Vitals — Demo Video</title>
+<meta name="description" content="27-second demo of Astronaut Vitals, an offline health self-check app for astronauts. NASA Space Apps Challenge 2026, team Bit&Byte.">
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; background: #070B18; color: #E8EEFA;
+         font: 16px/1.5 -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+         display: flex; flex-direction: column; align-items: center; padding: 24px 16px; }
+  main { width: 100%; max-width: 960px; }
+  h1 { font-size: clamp(24px, 4vw, 36px); margin: 0 0 4px; }
+  p { margin: 0 0 16px; color: #B7C3DA; }
+  video { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 12px; display: block; }
+  .links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+  .links a { color: #070B18; background: #7CB2FF; padding: 10px 16px; border-radius: 8px;
+             text-decoration: none; font-weight: 600; }
+  .links a.alt { background: transparent; color: #7CB2FF; border: 1px solid #7CB2FF; }
+  small { display: block; margin-top: 16px; color: #8C9BB8; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Astronaut Vitals — 27-second demo</h1>
+  <p>Team Bit&amp;Byte · NASA Space Apps Challenge 2026 · Create Health Monitoring Software for Astronauts on Space Missions</p>
+  <video controls autoplay muted playsinline preload="auto" poster="poster.png">
+    <source src="../docs/media/demo-video.mp4" type="video/mp4">
+    Your browser cannot play this video. <a href="../docs/media/demo-video.mp4">Download the MP4</a>.
+  </video>
+  <div class="links">
+    <a href="../">Open the live app</a>
+    <a class="alt" href="https://github.com/mirasdunenbaev1305-web/NASA-Space-Apps-Astronaut-Health-Monitor">Source code on GitHub</a>
+    <a class="alt" href="../docs/media/demo-video.mp4">Direct MP4 file</a>
+  </div>
+  <small>Screen recording of the app with synthetic demo data. Built with AI assistance (Claude) — see the README "AI tools used". Demo prototype, not a medical device.</small>
+</main>
+</body>
+</html>
