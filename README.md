@@ -1,6 +1,19 @@
 # Astronaut Vitals — NASA Space Apps Challenge 2026
 
-An educational, rule-based health-monitoring demo concept for a long-duration space mission. The repository currently contains the Logic & Content implementation and project documentation; the UI application is being built on the `ai1-ui` branch. This is not a medical device and must not be used to make care decisions.
+An educational, rule-based health self-assessment app for astronauts on long-duration missions. This is not a medical device and must not be used to make care decisions.
+
+**Live app:** https://mirasdunenbaev1305-web.github.io/NASA-Space-Apps-Astronaut-Health-Monitor/ — no login; installable; works offline after the first visit.
+
+## The app
+
+- **Interactive body figure** with seven clickable, keyboard-accessible areas (brain, mood, immune system, lungs, heart, digestive system, bones). Each shows its function, related indicators, spaceflight hazards and a tip.
+- **Reading form** for blood pressure, heart rate, blood glucose, body temperature, sleep, a 1–5 mood scale and symptoms, with input validation and a "Simulate readings" option.
+- **Status cards** (NORMAL / WATCH / ALERT, always with an icon and text) and a **"Contact flight surgeon on the ground"** banner for any ALERT or two or more WATCH indicators.
+- **Guidance**, a **spaceflight-hazard map**, **trend charts** with the normal band, and a history table.
+- **CSV export** and **print / save as PDF** report for the flight surgeon; **"Load demo week"** shows a 7-day story of sleep loss and rising heart rate.
+- **Offline, installable app (PWA):** communication with Earth is slow and intermittent on long missions, so self-assessment must work without a network. Data stays in the browser on the device.
+
+Files: `index.html`, `src/ui/` (interface), `src/styles/`, `sw.js` and `manifest.webmanifest` (offline/install), `src/engine/` and `config/` (rules and thresholds).
 
 ## Logic module
 
@@ -14,13 +27,15 @@ Readings may be `null` or omitted. Missing, non-finite, out-of-range, or invalid
 
 ## Run the tests
 
-The logic tests use Node's built-in test runner and have no third-party dependencies:
+All tests use Node's built-in test runner and have no third-party dependencies:
 
 ```sh
 npm test
 ```
 
-Node.js 22 or newer is recommended. To run tests directly without npm, use `node --test tests/evaluate.test.mjs`. Run the web app from the repository root with `python3 -m http.server 8000`, then open `http://localhost:8000`.
+This runs the logic tests (`tests/evaluate.test.mjs`) and the interface tests (`src/ui/tests/ui.test.mjs`), including a check that the engine's output works with the interface. Node.js 22 or newer is recommended.
+
+Run the web app locally from the repository root with `python3 -m http.server 8000`, then open `http://localhost:8000` (opening `index.html` directly from disk does not work because browsers block ES modules from `file://`).
 
 ## Indicators and demo thresholds
 
@@ -52,4 +67,4 @@ The product brief specifies browser-only storage with a reset control and no log
 
 ## AI tools used
 
-AI assistance was used to draft the JavaScript rule engine, illustrative demo threshold configuration, tests, and project documentation. NASA and agency references are attributed in `docs/DATA_SOURCES.md`. All health readings used in examples are synthetic; the thresholds and content are educational demo material, not NASA flight rules or clinical guidance.
+AI assistance was used to draft the JavaScript rule engine, illustrative demo threshold configuration, tests, and project documentation. The interface (`index.html`, `src/ui/`, `src/styles/`), its tests, the offline service worker, the app icon and the web manifest were generated with Claude (Anthropic); generated source files say so in a header comment. NASA and agency references are attributed in `docs/DATA_SOURCES.md`. All health readings used in examples are synthetic; the thresholds and content are educational demo material, not NASA flight rules or clinical guidance.
