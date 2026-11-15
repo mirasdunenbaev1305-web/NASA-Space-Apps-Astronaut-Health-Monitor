@@ -13,6 +13,8 @@ const T = {
   temperature: { label: 'Body temperature', unit: '°C', normal: [36.1, 37.4], watch: [35.5, 38.0] },
   sleepHours:  { label: 'Sleep (24 h)', unit: 'h',     normal: [6.5, 9],    watch: [5.5, 10] },
   mood:        { label: 'Mood',         unit: '/5',    normal: [3, 5],      watch: [2, 5] },
+  spo2:        { label: 'Blood oxygen (SpO₂)', unit: '%', normal: [95, 100], watch: [92, 100] },
+  exerciseMinutes: { label: 'Exercise today', unit: 'min', normal: [60, 300], watch: [30, 300] },
 };
 
 const ORDER = ['NORMAL', 'UNKNOWN', 'WATCH', 'ALERT'];
@@ -55,6 +57,8 @@ const GUIDANCE = {
   glucose:     ['Re-test before the next meal.', 'Review recent meals against the mission menu.', 'Keep a fast-acting carbohydrate nearby if low.'],
   temperature: ['Re-measure in 30 minutes.', 'Hydrate and check cabin temperature.', 'Watch for other infection symptoms.'],
   sleepHours:  ['Protect the next sleep period; dim lights 1 hour before.', 'Limit caffeine in the 6 hours before sleep.', 'Check noise and CO₂ levels in the sleep station.'],
+  spo2:        ['Rest and recheck with the pulse oximeter.', 'Check cabin air readings.', 'Tell the crew medical officer if it stays low.'],
+  exerciseMinutes: ['Plan the missed exercise into the next work period.', 'Report pain or schedule conflicts to the crew medical officer.'],
   mood:        ['Take a short break and contact family or a crewmate.', 'Schedule a check-in with the crew psychologist.', 'Keep exercise and sleep routines regular.'],
 };
 
@@ -74,8 +78,8 @@ export function getGuidance(indicatorId, status) {
 const ORGANS = {
   brain:  { name: 'Brain & nervous system', function: 'Controls thinking, balance and sleep cycles.', indicatorIds: ['sleepHours', 'systolic'], hazards: ['Space radiation', 'Isolation and confinement'] },
   heart:  { name: 'Heart', function: 'Pumps blood; adapts to fluid shifts in microgravity.', indicatorIds: ['heartRate', 'systolic', 'diastolic'], hazards: ['Gravity fields', 'Space radiation'] },
-  lungs:  { name: 'Lungs', function: 'Exchange oxygen and CO₂ with the cabin air.', indicatorIds: ['heartRate', 'temperature'], hazards: ['Hostile closed environment'] },
-  bones:  { name: 'Bones & muscles', function: 'Support the body; lose density without gravity loading.', indicatorIds: ['sleepHours'], hazards: ['Gravity fields', 'Distance from Earth'] },
+  lungs:  { name: 'Lungs', function: 'Exchange oxygen and CO₂ with the cabin air.', indicatorIds: ['spo2'], hazards: ['Hostile closed environment'] },
+  bones:  { name: 'Bones & muscles', function: 'Support the body; lose density without gravity loading.', indicatorIds: ['exerciseMinutes'], hazards: ['Gravity fields', 'Distance from Earth'] },
   gut:    { name: 'Digestive system', function: 'Absorbs nutrients and regulates blood sugar.', indicatorIds: ['glucose'], hazards: ['Distance from Earth', 'Hostile closed environment'] },
   immune: { name: 'Immune system', function: 'Defends against infection; weakens on long missions.', indicatorIds: ['temperature'], hazards: ['Space radiation', 'Hostile closed environment'] },
   mood:   { name: 'Mood & behavior', function: 'Emotional wellbeing and crew cohesion.', indicatorIds: ['mood', 'sleepHours'], hazards: ['Isolation and confinement', 'Distance from Earth'] },

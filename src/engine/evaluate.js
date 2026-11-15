@@ -32,6 +32,14 @@ const guidance = {
   mood: {
     WATCH: ['Consider a private check-in with a trusted crewmate or behavioral health support.', 'Track how you feel and use the mission-approved support resources.'],
     ALERT: ['Reach out promptly to the crew medical officer or behavioral health support.', 'If anyone may be in immediate danger, follow mission emergency procedures now.']
+  },
+  spo2: {
+    WATCH: ['Rest, warm your hands and recheck with the approved pulse oximeter.', 'Note breathing symptoms and check cabin air readings; tell the crew medical officer if it stays low.'],
+    ALERT: ['Follow the mission medical procedure for low oxygen saturation now.', 'Contact the flight surgeon or crew medical officer and report symptoms and cabin air readings.']
+  },
+  exerciseMinutes: {
+    WATCH: ['Plan the missing resistance and treadmill time into the next work period.', 'Tell the crew medical officer if pain or schedule prevents exercise.'],
+    ALERT: ['Bone and muscle loss in weightlessness depends on daily loading; restore the prescribed exercise plan.', 'Discuss repeated missed sessions with the flight surgeon and fitness team.']
   }
 };
 
@@ -50,14 +58,14 @@ const organs = {
   },
   lungs: {
     name: 'Lungs',
-    function: 'Exchange oxygen and carbon dioxide. This demo does not collect breathing rate or oxygen level.',
-    indicatorIds: [],
+    function: 'Exchange oxygen and carbon dioxide. A pulse-oximeter oxygen saturation reading is a simple check; it is not a full lung assessment.',
+    indicatorIds: ['spo2'],
     hazards: ['Hostile/closed environments', 'Distance from Earth']
   },
   bones: {
     name: 'Bones and skeleton',
-    function: 'Provide structure and protect organs. This demo has no bone-density measurement.',
-    indicatorIds: [],
+    function: 'Provide structure and protect organs. In weightlessness bones lose density without daily loading exercise; this demo tracks exercise minutes, not bone density.',
+    indicatorIds: ['exerciseMinutes'],
     hazards: ['Gravity fields', 'Distance from Earth']
   },
   gut: {
@@ -102,7 +110,7 @@ function classify(value, definition) {
   return 'UNKNOWN';
 }
 
-/** Evaluate the seven numeric readings described in CONTRACT.md. */
+/** Evaluate the numeric readings described in CONTRACT.md. */
 export function evaluateIndicators(readings = {}) {
   const safeReadings = readings && typeof readings === 'object' && !Array.isArray(readings) ? readings : {};
   const indicators = Object.entries(THRESHOLDS).map(([id, definition]) => {

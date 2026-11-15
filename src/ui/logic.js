@@ -4,7 +4,7 @@
 
 export const DAY_MS = 86400000;
 export const MAX_HISTORY = 1000;
-export const FIELDS = ['systolic', 'diastolic', 'heartRate', 'glucose', 'temperature', 'sleepHours'];
+export const FIELDS = ['systolic', 'diastolic', 'heartRate', 'glucose', 'temperature', 'sleepHours', 'spo2', 'exerciseMinutes'];
 export const ICON = { NORMAL: '✓', WATCH: '!', ALERT: '✕', UNKNOWN: '?' };
 export const TEXT = { NORMAL: 'Normal', WATCH: 'Watch', ALERT: 'Alert', UNKNOWN: 'No data' };
 export const RANK = { UNKNOWN: -1, NORMAL: 0, WATCH: 1, ALERT: 2 };
@@ -108,7 +108,8 @@ export function simulated(drift, rand = Math.random) {
   const doDrift = drift === undefined ? rand() < 0.4 : drift;
   const r = {
     systolic: rnd(rand, 102, 116), diastolic: rnd(rand, 64, 76), heartRate: rnd(rand, 62, 84), glucose: rnd(rand, 82, 112),
-    temperature: dec(rnd(rand, 36.6, 37.2, 0.1)), sleepHours: rnd(rand, 7, 8.5, 0.5), mood: rnd(rand, 4, 5), symptoms: [],
+    temperature: dec(rnd(rand, 36.6, 37.2, 0.1)), sleepHours: rnd(rand, 7, 8.5, 0.5), mood: rnd(rand, 4, 5),
+    spo2: rnd(rand, 96, 99), exerciseMinutes: rnd(rand, 75, 120, 5), symptoms: [],
   };
   if (doDrift) {
     const pick = ['heartRate', 'sleepHours', 'systolic', 'mood', 'temperature', 'glucose'][Math.min(5, Math.floor(rand() * 6))];
@@ -128,8 +129,8 @@ const DEMO_STORY = [
   { sleepHours: 7, heartRate: 70, mood: 4 },
   { sleepHours: 6, heartRate: 78, mood: 3 },
   { sleepHours: 5.5, heartRate: 92, mood: 3, systolic: 128 },
-  { sleepHours: 5, heartRate: 104, mood: 2, systolic: 134, symptoms: ['fatigue', 'headache'] },
-  { sleepHours: 4.5, heartRate: 112, mood: 2, systolic: 138, diastolic: 88, temperature: 37.6, symptoms: ['fatigue', 'headache', 'dizziness'] },
+  { sleepHours: 5, heartRate: 104, mood: 2, systolic: 134, exerciseMinutes: 40, symptoms: ['fatigue', 'headache'] },
+  { sleepHours: 4.5, heartRate: 112, mood: 2, systolic: 138, diastolic: 88, temperature: 37.6, spo2: 94, exerciseMinutes: 20, symptoms: ['fatigue', 'headache', 'dizziness'] },
 ];
 
 /** 7 days of readings ending now (never in the future): sleep loss, rising heart rate. */

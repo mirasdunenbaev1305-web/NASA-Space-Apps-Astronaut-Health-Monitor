@@ -12,12 +12,14 @@ const normalReadings = {
   temperature: 36.8,
   sleepHours: 7.5,
   mood: 4,
+  spo2: 98,
+  exerciseMinutes: 90,
   symptoms: []
 };
 
-test('normal example returns all seven indicators and no escalation', () => {
+test('normal example returns all nine indicators and no escalation', () => {
   const result = evaluateIndicators(normalReadings);
-  assert.equal(result.indicators.length, 7);
+  assert.equal(result.indicators.length, 9);
   assert.equal(result.overall, 'NORMAL');
   assert.equal(result.escalate, false);
   assert.ok(result.indicators.every(({ status }) => status === 'NORMAL'));
@@ -86,7 +88,7 @@ test('invalid types, non-finite values, and out-of-range values become UNKNOWN',
 test('empty, null, and malformed readings objects are handled safely', () => {
   for (const input of [undefined, null, [], 'invalid']) {
     const result = evaluateIndicators(input);
-    assert.equal(result.indicators.length, 7);
+    assert.equal(result.indicators.length, 9);
     assert.equal(result.overall, 'UNKNOWN');
     assert.equal(result.escalate, false);
   }

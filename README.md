@@ -7,7 +7,7 @@ An educational, rule-based health self-assessment app for astronauts on long-dur
 ## The app
 
 - **Interactive body figure** with seven clickable, keyboard-accessible areas (brain, mood, immune system, lungs, heart, digestive system, bones). Each shows its function, related indicators, spaceflight hazards and a tip.
-- **Reading form** for blood pressure, heart rate, blood glucose, body temperature, sleep, a 1–5 mood scale and symptoms, with input validation and a "Simulate readings" option.
+- **Reading form** for blood pressure, heart rate, blood glucose, body temperature, sleep, blood oxygen (SpO₂), bone-loading exercise minutes, a 1–5 mood scale and symptoms, with input validation and a "Simulate readings" option.
 - **Status cards** (NORMAL / WATCH / ALERT, always with an icon and text) and a **"Contact flight surgeon on the ground"** banner for any ALERT or two or more WATCH indicators.
 - **Guidance**, a **spaceflight-hazard map**, **trend charts** with the normal band, and a history table.
 - **CSV export** and **print / save as PDF** report for the flight surgeon; **"Load demo week"** shows a 7-day story of sleep loss and rising heart rate.
@@ -19,7 +19,7 @@ Files: `index.html`, `src/ui/` (interface), `src/styles/`, `sw.js` and `manifest
 
 `src/engine/evaluate.js` exports the functions defined in [`CONTRACT.md`](CONTRACT.md) and imports browser-safe thresholds from `src/engine/thresholds.js`:
 
-- `evaluateIndicators(readings)` evaluates systolic and diastolic blood pressure, heart rate, glucose, temperature, sleep hours, and a mood self-rating.
+- `evaluateIndicators(readings)` evaluates systolic and diastolic blood pressure, heart rate, glucose, temperature, sleep hours, a mood self-rating, blood oxygen saturation (lungs) and bone-loading exercise minutes (bones).
 - `getGuidance(indicatorId, status)` provides short demo guidance for WATCH and ALERT only.
 - `getOrganInfo(organId)` gives educational context for the seven body areas and their related indicators and spaceflight hazards.
 
@@ -50,6 +50,8 @@ Thresholds live in [`config/thresholds.json`](config/thresholds.json). They are 
 | Temperature | 36.5–37.3 °C | 35.0–36.4 or 37.4–37.9 | <35.0 or ≥38.0 |
 | Sleep, last 24 h | ≥7 h | 5–6.9 h | <5 h |
 | Mood self-rating | 4–5 / 5 | 3 / 5 | 1–2 / 5 |
+| Blood oxygen SpO₂ (lungs) | 95–100 % | 92–94 % | <92 % |
+| Bone-loading exercise today (bones) | ≥60 min | 30–59 min | <30 min |
 
 These bands deliberately simplify heterogeneous reference values into one transparent demo rule. A displayed ALERT is not a diagnosis or an emergency determination. Use approved mission procedures and qualified clinical judgment.
 

@@ -64,5 +64,63 @@ export const THRESHOLDS = {
     watch: [{ min: 3, max: 3 }],
     alert: [{ min: 1, max: 2 }],
     threshold: '4–5 /5'
+  },
+  spo2: {
+    label: 'Blood oxygen saturation (SpO₂)',
+    unit: '%',
+    validRange: {
+      min: 50,
+      max: 100
+    },
+    normal: [
+      {
+        min: 95,
+        max: 100
+      }
+    ],
+    watch: [
+      {
+        min: 92,
+        max: 95,
+        maxExclusive: true
+      }
+    ],
+    alert: [
+      {
+        min: 50,
+        max: 92,
+        maxExclusive: true
+      }
+    ],
+    threshold: '95–100 %'
+  },
+  exerciseMinutes: {
+    label: 'Bone-loading exercise today',
+    unit: 'min',
+    validRange: {
+      min: 0,
+      max: 300
+    },
+    normal: [
+      {
+        min: 60,
+        max: 300
+      }
+    ],
+    watch: [
+      {
+        min: 30,
+        max: 60,
+        maxExclusive: true
+      }
+    ],
+    alert: [
+      {
+        min: 0,
+        max: 30,
+        maxExclusive: true
+      }
+    ],
+    threshold: '60–300 min'
   }
 };

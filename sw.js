@@ -3,7 +3,7 @@
 // falling back to cache when offline. CDN files (Chart.js): cache first.
 // AI-generated code (Claude) — see README "AI tools used".
 
-const CACHE = 'astronaut-vitals-v2';
+const CACHE = 'astronaut-vitals-v3';
 const CORE = [
   './',
   './index.html',

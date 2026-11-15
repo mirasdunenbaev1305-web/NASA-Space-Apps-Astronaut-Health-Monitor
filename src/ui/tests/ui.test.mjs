@@ -19,7 +19,7 @@ import { ORGAN_IDS } from '../body.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const read = (p) => readFileSync(join(ROOT, p), 'utf8');
-const INDICATOR_IDS = ['systolic', 'diastolic', 'heartRate', 'glucose', 'temperature', 'sleepHours', 'mood'];
+const INDICATOR_IDS = ['systolic', 'diastolic', 'heartRate', 'glucose', 'temperature', 'sleepHours', 'mood', 'spo2', 'exerciseMinutes'];
 const STATUSES = ['NORMAL', 'WATCH', 'ALERT', 'UNKNOWN'];
 
 // Deterministic random numbers for repeatable tests.
