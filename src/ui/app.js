@@ -11,6 +11,16 @@ const FIELDS = ['systolic', 'diastolic', 'heartRate', 'glucose', 'temperature', 
 const ICON = { NORMAL: '✓', WATCH: '!', ALERT: '✕', UNKNOWN: '?' };
 const TEXT = { NORMAL: 'Normal', WATCH: 'Watch', ALERT: 'Alert', UNKNOWN: 'No data' };
 const RANK = { NORMAL: 0, UNKNOWN: -1, WATCH: 1, ALERT: 2 };
+const HAZARD_TEXT = {
+  spaceRadiation: 'Space radiation',
+  isolationConfinement: 'Isolation and confinement',
+  distanceFromEarth: 'Distance from Earth',
+  gravityFields: 'Gravity fields',
+  hostileClosedEnvironments: 'Hostile closed environments',
+};
+// Engine may return hazard ids ("spaceRadiation") or plain text; show readable text.
+const hazardText = (h) => HAZARD_TEXT[h] || String(h).replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (c) => c.toUpperCase());
+const rangeText = (t) => (/NORMAL/i.test(String(t)) ? String(t) : `Normal: ${t}`);
 const SYMPTOM_TEXT = { headache: 'Headache', dizziness: 'Dizziness', nausea: 'Nausea', jointPain: 'Joint pain', fatigue: 'Fatigue' };
 
 const $ = (sel) => document.querySelector(sel);
@@ -158,7 +168,7 @@ function renderOrganDetail(statuses, byId) {
   if (info.hazards && info.hazards.length) {
     box.append(el('p', 'sub', 'Spaceflight hazards'));
     const chips = el('div', 'chips');
-    info.hazards.forEach((hz) => chips.append(el('span', 'chip', hz)));
+    info.hazards.forEach((hz) => chips.append(el('span', 'chip', hazardText(hz))));
     box.append(chips);
   }
 
@@ -168,6 +178,8 @@ function renderOrganDetail(statuses, byId) {
   if (flagged.length) {
     const g = safeGuidance(flagged[0].id, flagged[0].status);
     if (g && g.steps && g.steps.length) tip = g.steps[0];
+  } else if (!(info.indicatorIds || []).length) {
+    tip = 'No indicator in this prototype measures this area directly. Follow the scheduled exercise and medical checks for it.';
   } else if (status === 'UNKNOWN') {
     tip = 'No measurements for this area yet. Log a reading to see its status.';
   }
@@ -195,7 +207,7 @@ function renderStatus(result) {
     top.append(el('span', 'label', i.label), badge(i.status));
     const v = el('div', 'value', i.value === null || i.value === undefined ? '—' : String(i.value));
     v.append(el('small', '', i.unit));
-    li.append(top, v, el('span', 'range', `Normal: ${i.threshold}`));
+    li.append(top, v, el('span', 'range', rangeText(i.threshold)));
     grid.append(li);
   });
   if (l && l.readings.symptoms && l.readings.symptoms.length) {
@@ -237,7 +249,7 @@ function renderHazards(statuses) {
   map.forEach((ids, hz) => {
     const li = el('li', 'hazard');
     const head = el('div', 'hazard-head');
-    head.append(el('strong', '', hz), badge(worst(ids.map((id) => statuses[id]))));
+    head.append(el('strong', '', hazardText(hz)), badge(worst(ids.map((id) => statuses[id]))));
     const chips = el('div', 'chips');
     ids.forEach((id) => {
       const c = el('button', 'chip', names[id]);
@@ -353,17 +365,17 @@ function onSubmit(e) {
 const rnd = (a, b, step = 1) => Math.round((a + Math.random() * (b - a)) / step) * step;
 function simulated(drift = Math.random() < 0.4) {
   const r = {
-    systolic: rnd(108, 126), diastolic: rnd(66, 82), heartRate: rnd(58, 84), glucose: rnd(78, 104),
-    temperature: Number(rnd(36.4, 37.1, 0.1).toFixed(1)), sleepHours: rnd(6.5, 8.5, 0.5), mood: rnd(3, 5), symptoms: [],
+    systolic: rnd(102, 116), diastolic: rnd(64, 76), heartRate: rnd(62, 84), glucose: rnd(82, 112),
+    temperature: Number(rnd(36.6, 37.2, 0.1).toFixed(1)), sleepHours: rnd(7, 8.5, 0.5), mood: rnd(4, 5), symptoms: [],
   };
   if (drift) {
     const pick = ['heartRate', 'sleepHours', 'systolic', 'mood', 'temperature', 'glucose'][rnd(0, 5)];
-    if (pick === 'heartRate') r.heartRate = rnd(104, 122);
-    if (pick === 'sleepHours') r.sleepHours = rnd(4, 6, 0.5);
-    if (pick === 'systolic') { r.systolic = rnd(132, 148); r.diastolic = rnd(84, 92); }
-    if (pick === 'mood') { r.mood = rnd(1, 2); r.symptoms = ['fatigue']; }
-    if (pick === 'temperature') { r.temperature = Number(rnd(37.6, 38.4, 0.1).toFixed(1)); r.symptoms = ['headache', 'fatigue']; }
-    if (pick === 'glucose') r.glucose = rnd(118, 150);
+    if (pick === 'heartRate') r.heartRate = rnd(104, 126);
+    if (pick === 'sleepHours') r.sleepHours = rnd(4, 6.5, 0.5);
+    if (pick === 'systolic') { r.systolic = rnd(126, 146); r.diastolic = rnd(82, 92); }
+    if (pick === 'mood') { r.mood = rnd(1, 3); r.symptoms = ['fatigue']; }
+    if (pick === 'temperature') { r.temperature = Number(rnd(37.5, 38.3, 0.1).toFixed(1)); r.symptoms = ['headache', 'fatigue']; }
+    if (pick === 'glucose') r.glucose = rnd(145, 190);
   }
   return r;
 }

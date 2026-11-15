@@ -6,9 +6,16 @@ const charts = new Map();
 const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 const STATUS_TEXT = { NORMAL: 'Normal', WATCH: 'Watch', ALERT: 'Alert', UNKNOWN: 'No data' };
 
-// Contract gives the normal range only as text ("60–100 bpm"); parse it for the band.
+// Contract gives the normal range only as text. Accepts "60–100 bpm" and the engine's
+// fuller form "NORMAL 60–100; WATCH …" or "NORMAL ≥7; …" (open upper end).
+const NUM = '(-?\\d+(?:\\.\\d+)?)';
 export function parseRange(text) {
-  const m = String(text || '').match(/(-?\d+(?:\.\d+)?)\s*[–—-]\s*(-?\d+(?:\.\d+)?)/);
+  const s = String(text || '');
+  let m = s.match(new RegExp(`NORMAL\\s*${NUM}\\s*[–—-]\\s*${NUM}`, 'i'));
+  if (m) return [Number(m[1]), Number(m[2])];
+  m = s.match(new RegExp(`NORMAL\\s*(?:≥|>=|>)\\s*${NUM}`, 'i'));
+  if (m) { const lo = Number(m[1]); return [lo, lo * 1.4]; }
+  m = s.match(new RegExp(`${NUM}\\s*[–—-]\\s*${NUM}`));
   return m ? [Number(m[1]), Number(m[2])] : null;
 }
 
