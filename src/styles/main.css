@@ -216,6 +216,11 @@ legend { font-weight: 600; margin-bottom: 8px; padding: 0; }
   border: 1px solid var(--border); border-top: 4px solid var(--st, var(--unknown));
   display: grid; gap: 6px;
 }
+.status-card .card-top { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: flex-start; }
+.status-card.info-card { border-top-color: var(--accent); }
+.status-card .symptom-list { font-weight: 600; }
+.chip-btn { border: 0; cursor: pointer; min-height: 32px; }
+.chip-btn:hover { color: var(--text); background: #2b3b70; }
 .status-card .label { color: var(--text-2); font-size: 0.9rem; }
 .status-card .value { font-size: 1.6rem; font-weight: 700; font-variant-numeric: tabular-nums; }
 .status-card .value small { font-size: 0.85rem; font-weight: 500; color: var(--muted); margin-left: 4px; }

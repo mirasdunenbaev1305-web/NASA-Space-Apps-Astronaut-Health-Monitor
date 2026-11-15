@@ -3,7 +3,7 @@
 // falling back to cache when offline. CDN files (Chart.js): cache first.
 // AI-generated code (Claude) — see README "AI tools used".
 
-const CACHE = 'astronaut-vitals-v1';
+const CACHE = 'astronaut-vitals-v2';
 const CORE = [
   './',
   './index.html',
@@ -14,7 +14,9 @@ const CORE = [
   './src/ui/body.js',
   './src/ui/charts.js',
   './src/ui/stubs.js',
+  './src/ui/logic.js',
   './icons/icon.svg',
+  './icons/apple-touch-icon.png',
   './icons/icon-192.png',
   './icons/icon-512.png',
   'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js',

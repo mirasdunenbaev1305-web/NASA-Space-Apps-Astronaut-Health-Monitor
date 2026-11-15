@@ -41,7 +41,8 @@ export function evaluateIndicators(readings = {}) {
       threshold: `${t.normal[0]}–${t.normal[1]} ${t.unit}`,
     };
   });
-  const overall = indicators.reduce((acc, i) => (i.status === 'UNKNOWN' ? acc : worst(acc, i.status)), 'NORMAL');
+  const measured = indicators.filter((i) => i.status !== 'UNKNOWN');
+  const overall = measured.length ? measured.reduce((acc, i) => worst(acc, i.status), 'NORMAL') : 'UNKNOWN';
   const watchCount = indicators.filter((i) => i.status === 'WATCH').length;
   const escalate = indicators.some((i) => i.status === 'ALERT') || watchCount >= 2;
   return { indicators, overall, escalate };

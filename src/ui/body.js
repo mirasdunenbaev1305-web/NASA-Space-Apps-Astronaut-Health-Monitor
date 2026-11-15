@@ -1,6 +1,8 @@
 // Interactive human figure (inline SVG). Each body area is a focusable button.
 // AI-generated code (Claude) — see README "AI tools used".
 
+import { escapeHtml, normStatus, TEXT } from './logic.js';
+
 export const ORGAN_IDS = ['mood', 'brain', 'immune', 'lungs', 'heart', 'gut', 'bones'];
 
 const SILHOUETTE = `
@@ -29,8 +31,8 @@ const ORGAN_SHAPES = {
 
 export function renderFigure(container, names, onSelect) {
   const groups = ORGAN_IDS.map((id) => `
-    <g class="organ" data-organ="${id}" data-status="UNKNOWN" tabindex="0" role="button" aria-label="${names[id] || id}">
-      <title>${names[id] || id}</title>
+    <g class="organ" data-organ="${id}" data-status="UNKNOWN" tabindex="0" role="button" aria-label="${escapeHtml(names[id] || id)}">
+      <title>${escapeHtml(names[id] || id)}</title>
       ${ORGAN_SHAPES[id]}
     </g>`).join('');
   container.innerHTML = `
@@ -49,10 +51,10 @@ export function renderFigure(container, names, onSelect) {
 export function updateFigure(container, statusByOrgan, names, selected) {
   container.querySelectorAll('.organ').forEach((g) => {
     const id = g.dataset.organ;
-    const status = statusByOrgan[id] || 'UNKNOWN';
+    const status = normStatus(statusByOrgan[id]);
     g.dataset.status = status;
     g.classList.toggle('selected', id === selected);
-    const label = `${names[id] || id}: ${status.toLowerCase()}`;
+    const label = `${names[id] || id}: ${TEXT[status]}`;
     g.setAttribute('aria-label', label);
     g.setAttribute('aria-pressed', String(id === selected));
     const t = g.querySelector('title');
