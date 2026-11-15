@@ -17,7 +17,7 @@ Files: `index.html`, `src/ui/` (interface), `src/styles/`, `sw.js` and `manifest
 
 ## Logic module
 
-`src/engine/evaluate.js` exports the functions defined in [`CONTRACT.md`](CONTRACT.md) and imports browser-safe thresholds from `src/engine/thresholds.js`:
+`src/engine/evaluate.js` exports the functions defined in [`docs/process/CONTRACT.md`](docs/process/CONTRACT.md) and imports browser-safe thresholds from `src/engine/thresholds.js`:
 
 - `evaluateIndicators(readings)` evaluates systolic and diastolic blood pressure, heart rate, glucose, temperature, sleep hours, a mood self-rating, blood oxygen saturation (lungs) and bone-loading exercise minutes (bones).
 - `getGuidance(indicatorId, status)` provides short demo guidance for WATCH and ALERT only.
@@ -61,7 +61,13 @@ See [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md) for source-by-source notes, i
 
 ## Demo material
 
-[`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) contains a seven-slide outline. Replace the team and participant placeholders before submission.
+- **Demo video (27 s):** https://mirasdunenbaev1305-web.github.io/NASA-Space-Apps-Astronaut-Health-Monitor/demo/
+- **Slides (7):** https://mirasdunenbaev1305-web.github.io/NASA-Space-Apps-Astronaut-Health-Monitor/slides/
+- Screenshots: [`docs/media/screenshots/`](docs/media/screenshots/)
+
+Team Bit&Byte: Madi Shynzhyrbekov (logic and content), Miras Dunenbaev (user interface).
+
+`docs/process/` keeps our working notes: the original prompt, how work was split between two AI-assisted developers, the UI–engine contract, review notes and submission drafts. They document our process and AI use; some notes are in Russian.
 
 ## Data and privacy
 
