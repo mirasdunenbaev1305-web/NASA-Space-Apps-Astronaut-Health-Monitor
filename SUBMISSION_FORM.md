@@ -13,6 +13,8 @@ Astronaut Vitals is an offline web app that helps astronauts check their own hea
 ## Project Demonstration
 https://mirasdunenbaev1305-web.github.io/NASA-Space-Apps-Astronaut-Health-Monitor/demo/
 
+(Slides, 7: https://mirasdunenbaev1305-web.github.io/NASA-Space-Apps-Astronaut-Health-Monitor/slides/ — linked from the video page.)
+
 (27-second video, English, synthetic data, with a visible "AI-assisted" watermark. Screenshots are in `docs/media/screenshots/`.)
 
 ## Project
